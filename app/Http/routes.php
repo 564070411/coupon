@@ -11,6 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::auth();
+
+Route::get('/', 'Home\IndexController@index');
+Route::get('/index','Home\IndexController@index');
+Route::get('/cplist','Home\IndexController@cplist');
+Route::get('/cate','Home\IndexController@cate');
+
+Route::group(['middleware'=>'auth','prefix'=>'admin'],function(){
+	Route::get('/', 'Admin\IndexController@index');
+	
+	Route::resource('cate', 'Admin\CateController');
+	Route::get('cate/create_child/{id}', 'Admin\CateController@create_child');
+
+	Route::resource('coupon', 'Admin\CouponController');
+
+	Route::resource('busn', 'Admin\BusnController');
 });
